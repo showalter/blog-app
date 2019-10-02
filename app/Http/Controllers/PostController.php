@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Http\Requests\StorePost;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -66,9 +67,13 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::find($id);
+        if (Gate::allows('update-post', Post::find($id))) {
+            $post = Post::find($id);
 
-        return view('editpost')->with('post', $post);
+            return view('editpost')->with('post', $post);
+        } else {
+            return view('403');
+        }
     }
 
     /**
