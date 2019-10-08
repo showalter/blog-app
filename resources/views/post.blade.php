@@ -16,6 +16,34 @@
                     
                     <h5>Written by: {{ $post->user->name }}</h5>
                     {{ $post->body }}
+
+                    <form action="/post/{{ $post-> id}}/comment" method="post">
+                        @csrf
+
+                        <div class="form-group">
+                            <label for="body">Body</label>
+                            <input type="text" class="form-control" id="body" name="body">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+                    <h4>Comments</h4>
+                    @forelse ($post->comments as $comment)
+                    {{ $comment->body }}</br>
+                    @empty
+                    No comments</br>
+                    @endforelse
                 </div>
             </div>
         </div>
